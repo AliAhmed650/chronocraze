@@ -1,0 +1,717 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chronocraze</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&family=Cormorant+Garamond:wght@500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Cairo:wght@400;500;600;700&family=Amiri:wght@400;700&display=swap">
+<style>
+/* Layout: dark single-column luxury landing page, 1080px rail, sticky glass nav, cards that react to cursor */
+:root{
+  --bg:#030303; --surface:#0b0b0c; --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.16);
+  --fg:#f4f4f5; --muted:#8c8c92; --dim:#5d5d63; --red:#b3141f;
+  --display:'Plus Jakarta Sans','Segoe UI',system-ui,sans-serif;
+  --serif:'Cormorant Garamond','Times New Roman',serif;
+  --logo:'Cinzel','Times New Roman',serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--display);font-size:14px;line-height:1.6;overflow-x:hidden;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--bg)}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.wrap{max-width:1080px;margin:0 auto}
+.eyebrow{font-size:9.5px;letter-spacing:.34em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:12px}
+.grad{background:linear-gradient(180deg,#fff 0%,#7d7d82 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+h1,h2,h3{margin:0;font-weight:600;letter-spacing:-.02em;text-wrap:balance}
+h2.sec{font-size:clamp(26px,3.6vw,38px);line-height:1.15}
+.center{text-align:center}
+.lead{color:var(--dim);font-size:13px;max-width:520px;margin:14px auto 0}
+
+/* NAV */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;margin:0 calc(-1 * max(16px,env(safe-area-inset-left,0px)));
+  padding:0 max(16px,env(safe-area-inset-left,0px));background:rgba(3,3,3,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line);transition:background .4s}
+.nav.solid{background:rgba(3,3,3,.92)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:62px;gap:16px}
+.logo{font-family:var(--logo);letter-spacing:.3em;font-size:14px;font-weight:500}
+.links{display:flex;gap:28px;position:absolute;left:50%;transform:translateX(-50%)}
+.links a{font-size:11px;color:#c9c9cc;position:relative;padding:6px 0;transition:color .25s}
+.links a::after{content:"";position:absolute;left:50%;right:50%;bottom:0;height:1.5px;background:#fff;transition:left .35s,right .35s}
+.links a:hover,.links a.on{color:#fff}
+.links a.on::after,.links a:hover::after{left:0;right:0}
+.nav-r{display:flex;gap:10px;align-items:center}
+.pill{border:1px solid var(--line2);border-radius:99px;padding:5px 22px;font-size:11px;background:transparent;transition:background .3s,color .3s}
+.pill:hover{background:#fff;color:#000}
+.avatar{width:30px;height:30px;border-radius:50%;background:#fff;display:grid;place-items:center}
+.burger{display:none;background:none;border:1px solid var(--line2);border-radius:8px;width:36px;height:34px}
+@media(max-width:820px){.links{display:none;position:static;transform:none}.burger{display:block}
+  .nav.open .links{display:flex;position:absolute;top:62px;left:0;right:0;flex-direction:column;background:#050505;padding:16px 24px;gap:6px;border-bottom:1px solid var(--line)}
+  .pill{display:none}}
+
+/* HERO */
+.hero{position:relative;padding:54px 0 0;text-align:center;min-height:620px}
+.hero h1{font-size:clamp(34px,5.4vw,56px);line-height:1.08;margin-top:6px}
+.hero .eyebrow{animation:rise 1s .1s both}
+.hero h1{animation:rise 1s .25s both}.hero p{animation:rise 1s .4s both}
+.hero p{color:#9a9aa0;font-size:13px;max-width:430px;margin:18px auto 0}
+.shimmer{background:linear-gradient(100deg,#6d6d72 20%,#fff 45%,#6d6d72 70%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shim 5s linear infinite}
+@keyframes shim{to{background-position:-220% 0}}
+@keyframes rise{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+.stage{position:relative;width:min(560px,100%);margin:20px auto 0;height:430px;display:grid;place-items:center}
+.stage::before{content:"";position:absolute;inset:8% 10%;background:radial-gradient(closest-side,rgba(255,255,255,.12),transparent 70%);filter:blur(10px);animation:pulse 6s ease-in-out infinite}
+.stage .w{width:min(420px,88%);animation:float 7s ease-in-out infinite,rise 1.4s .5s both;filter:drop-shadow(0 40px 40px #000)}
+.stage .w svg{width:100%;height:auto;display:block}
+@keyframes float{50%{transform:translateY(-14px) rotate(-1.2deg)}}
+@keyframes pulse{50%{opacity:.5;transform:scale(1.08)}}
+.scrollcue{position:absolute;left:50%;bottom:0;width:1px;height:46px;background:linear-gradient(#fff,transparent);transform-origin:top;animation:cue 2.2s ease-in-out infinite}
+@keyframes cue{0%{transform:scaleY(0)}60%{transform:scaleY(1)}100%{transform:scaleY(1);opacity:0}}
+
+/* ABOUT */
+.about{position:relative;padding:110px 0 100px}
+.ghost{position:absolute;left:50%;top:50%;width:640px;max-width:140vw;opacity:.06;transform:translate(-50%,-50%);pointer-events:none;will-change:transform}
+.about .grid{display:grid;grid-template-columns:1fr 1.05fr;gap:34px;align-items:start;position:relative}
+.about h2{font-size:22px;margin-bottom:18px}
+.about p{font-size:11.5px;color:#a3a3a8;max-width:430px;margin:0 0 16px;line-height:1.85}
+.about p b{color:#fff;font-weight:600}
+.about .more{font-size:11px;font-weight:600;border-bottom:1px solid #fff;padding-bottom:2px;display:inline-block}
+.slider{position:relative;aspect-ratio:1.38;border-radius:6px;overflow:hidden;border:1px solid var(--line);background:#050505}
+.slide{position:absolute;inset:0;opacity:0;transform:scale(1.06);transition:opacity .9s,transform 1.6s}
+.slide.on{opacity:1;transform:scale(1)}
+.slide .bg{position:absolute;inset:0}
+.slide .w{position:absolute;inset:6% 22% 20%;display:grid;place-items:center}
+.slide .w svg{height:100%;width:auto;max-width:100%}
+.cap{position:absolute;left:0;right:0;bottom:0;padding:34px 18px 14px;background:linear-gradient(transparent,rgba(0,0,0,.88));text-align:center}
+.cap small{font-size:8px;letter-spacing:.26em;color:#aaa;text-transform:uppercase;display:block}
+.cap strong{font-family:var(--serif);font-size:15px;letter-spacing:.12em;text-transform:uppercase;font-weight:600}
+.cap span{display:block;font-size:9px;color:#8b8b90;margin-top:2px}
+.arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:3;background:none;border:0;color:#fff;opacity:.6;font-size:20px;padding:10px;transition:opacity .2s,transform .2s}
+.arrow:hover{opacity:1}.arrow.l{left:6px}.arrow.r{right:6px}
+.arrow.l:hover{transform:translate(-3px,-50%)}.arrow.r:hover{transform:translate(3px,-50%)}
+.gear{position:absolute;left:50%;top:38%;transform:translate(-50%,-50%);width:38px;height:38px;border-radius:50%;background:rgba(0,0,0,.55);border:1px solid var(--line2);display:grid;place-items:center;z-index:2}
+@media(max-width:820px){.about .grid{grid-template-columns:1fr}}
+
+/* ANATOMY */
+.anat{padding:60px 0 90px}
+.feat{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:46px}
+.card{position:relative;border:1px solid var(--line);border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.01));overflow:hidden;transition:border-color .4s,transform .5s cubic-bezier(.2,.8,.2,1)}
+.card::after{content:"";position:absolute;inset:0;background:radial-gradient(260px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.09),transparent 60%);opacity:0;transition:opacity .35s;pointer-events:none}
+.card:hover{border-color:var(--line2)}.card:hover::after{opacity:1}
+.f{padding:20px 18px 22px}
+.f:nth-child(2){margin-top:14px}.f:nth-child(4){margin-top:-6px}
+.f .ic{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.07);display:grid;place-items:center;margin-bottom:34px;transition:background .3s,transform .5s}
+.f:hover .ic{background:#fff;transform:rotate(90deg)}.f:hover .ic svg{stroke:#000}
+.f .n{position:absolute;right:14px;top:12px;font-size:11px;color:#444}
+.f h3{font-size:13px;margin-bottom:8px}
+.f p{margin:0;font-size:10px;color:#6d6d73;line-height:1.7}
+.panel{margin-top:44px;display:grid;grid-template-columns:1.2fr 1fr;align-items:center;padding:28px 34px;min-height:260px}
+.panel h3{font-size:22px;line-height:1.25;max-width:360px;margin:6px 0 12px}
+.panel p{font-size:11px;color:#6d6d73;max-width:380px;margin:0 0 28px}
+.stats{display:flex;gap:34px}
+.stats div{font-family:var(--serif);font-size:24px;font-weight:500;line-height:1.1}
+.stats small{display:block;font-family:var(--display);font-size:8.5px;letter-spacing:.2em;color:#55555a;margin-top:6px;text-transform:uppercase}
+.panel .w{justify-self:center;width:min(250px,100%);animation:float 8s ease-in-out infinite;filter:drop-shadow(0 20px 24px #000)}
+@media(max-width:820px){.feat{grid-template-columns:1fr 1fr}.f:nth-child(n){margin-top:0}.panel{grid-template-columns:1fr;padding:24px 20px}}
+@media(max-width:480px){.feat{grid-template-columns:1fr}.stats{gap:20px}}
+
+/* COLLECTION */
+.coll{padding:30px 0 100px}
+.tabs{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:36px 0 34px}
+.tab{background:transparent;border:1px solid transparent;border-radius:99px;padding:5px 14px;font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;color:#a0a0a5;transition:all .3s}
+.tab:hover{color:#fff}.tab.on{background:#fff;color:#000;font-weight:600}
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:start}
+.p{transition:opacity .5s,transform .6s cubic-bezier(.2,.8,.2,1)}
+.p.off{display:none}
+.p:nth-child(3n+2){margin-top:16px}
+.ph{position:relative;aspect-ratio:1.18;overflow:hidden}
+.ph .bg{position:absolute;inset:0;transition:transform 1s cubic-bezier(.2,.8,.2,1)}
+.ph .w{position:absolute;inset:8% 14%;display:grid;place-items:center;transition:transform 1s cubic-bezier(.2,.8,.2,1)}
+.ph .w svg{height:100%;width:auto;max-width:100%}
+.p:hover .bg{transform:scale(1.07)}.p:hover .w{transform:scale(1.07) rotate(-2deg)}
+.badge{position:absolute;left:12px;top:12px;z-index:2;background:rgba(0,0,0,.65);border:1px solid var(--line);border-radius:99px;padding:3px 10px;font-size:7.5px;letter-spacing:.14em;text-transform:uppercase;backdrop-filter:blur(6px)}
+.pb{padding:16px 14px 14px}
+.ref{font-size:8px;letter-spacing:.17em;color:#77777d;text-transform:uppercase}
+.pb h3{font-family:var(--serif);font-size:16px;letter-spacing:.07em;text-transform:uppercase;margin:3px 0 4px;font-weight:600}
+.spec{font-size:8.5px;color:#76767c;display:flex;gap:14px}
+.pb p{font-size:9.5px;color:#5f5f65;margin:14px 0 16px;line-height:1.7;min-height:48px}
+.pf{display:flex;align-items:center;justify-content:space-between;font-size:8px;letter-spacing:.17em;color:#8a8a90;text-transform:uppercase}
+.btn{border:1px solid var(--line2);border-radius:99px;background:transparent;padding:6px 16px;font-size:10px;letter-spacing:0;text-transform:none;color:#fff;transition:all .3s}
+.btn:hover{background:#fff;color:#000}
+@media(max-width:860px){.pgrid{grid-template-columns:1fr 1fr}.p:nth-child(3n+2){margin-top:0}.p:nth-child(2n){margin-top:16px}}
+@media(max-width:520px){.pgrid{grid-template-columns:1fr}.p:nth-child(n){margin-top:0}}
+
+/* GALLERY */
+.gal{padding:20px 0 100px}
+.galhead{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:26px}
+.galhead p{font-size:10px;color:#66666b;max-width:230px;margin:0}
+.bento{display:grid;grid-template-columns:1.15fr 1fr 1fr;grid-template-rows:200px 200px;gap:14px}
+.g{position:relative;overflow:hidden;border-radius:6px;border:1px solid var(--line)}
+.g.tall{grid-row:span 2}.g.wide{grid-column:span 2}
+.g .bg{position:absolute;inset:0;transition:transform 1.2s cubic-bezier(.2,.8,.2,1)}
+.g .w{position:absolute;inset:0;display:grid;place-items:center;transition:transform 1.2s cubic-bezier(.2,.8,.2,1)}
+.g .w svg{height:78%;width:auto}
+.g.wide .w{justify-content:end;padding-right:12%}.g.wide .w svg{height:96%}
+.g:hover .bg,.g:hover .w{transform:scale(1.08)}
+.gc{position:absolute;left:0;right:0;bottom:0;padding:34px 16px 14px;background:linear-gradient(transparent,rgba(0,0,0,.85))}
+.gc small{display:block;font-size:7.5px;letter-spacing:.22em;color:#aaa;text-transform:uppercase}
+.gc strong{font-family:var(--serif);font-size:14px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;display:block;max-width:190px;line-height:1.2}
+.gc span{font-size:9px;color:#8b8b90;display:block;margin-top:3px;max-width:240px;opacity:0;transform:translateY(6px);transition:all .5s;line-height:1.4}
+.g:hover .gc span{opacity:1;transform:none}
+@media(max-width:760px){.bento{grid-template-columns:1fr 1fr;grid-template-rows:auto}.g{min-height:200px}.g.tall{grid-row:auto;min-height:260px}.g.wide{grid-column:span 2}}
+@media(max-width:480px){.bento{grid-template-columns:1fr}.g.wide{grid-column:auto}}
+
+/* JOURNAL */
+.jour{padding:10px 0 90px}
+.jgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
+.j .ph{aspect-ratio:2.1}
+.j .ph .w{inset:14% 14% 0}
+.j .pb{padding:14px 14px 20px}
+.j h3{font-family:var(--display);font-size:12.5px;line-height:1.35;letter-spacing:0;text-transform:none;margin:5px 0 10px}
+.j p{min-height:0;margin:0 0 18px}
+.read{font-size:8.5px;letter-spacing:.17em;text-transform:uppercase;display:inline-flex;gap:8px;align-items:center}
+.read i{font-style:normal;transition:transform .3s}.j:hover .read i{transform:translateX(5px)}
+@media(max-width:760px){.jgrid{grid-template-columns:1fr}}
+
+/* FOOTER */
+footer{border-top:1px solid var(--line);margin:0 calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:50px max(16px,env(safe-area-inset-left,0px)) 0}
+.fgrid{display:grid;grid-template-columns:1fr 1.5fr;gap:60px}
+.fgrid .logo{display:block;margin-bottom:16px}
+.fgrid p{font-size:11px;color:#77777d;max-width:290px;margin:0 0 14px}
+.ci{font-size:9.5px;color:#66666b;display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.fgrid h4{margin:0 0 4px;font-size:13px}
+.fgrid .sub{font-size:9.5px;color:#4d4d52;margin:0 0 18px}
+form{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+input,select{width:100%;background:rgba(255,255,255,.035);border:1px solid var(--line);border-radius:6px;padding:12px 14px;color:#fff;font:inherit;font-size:11px;transition:border-color .3s,background .3s}
+input::placeholder{color:#55555a}
+input:focus,select:focus{outline:none;border-color:#fff;background:rgba(255,255,255,.06)}
+select{appearance:none;color:#a0a0a5}
+select option{background:#111;color:#fff}
+.sbtn{grid-column:1;justify-self:start;margin-top:4px;background:#fff;color:#000;border:0;border-radius:99px;padding:10px 24px;font-size:11px;font-weight:600;transition:transform .3s,box-shadow .3s}
+.sbtn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(255,255,255,.2)}
+.ok{grid-column:1/-1;font-size:11px;color:#9ad3a6;min-height:16px;margin:0}
+.bar{margin-top:46px;border-top:1px solid var(--line);padding:18px 0 26px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:9.5px;color:#5d5d63}
+.bar nav{display:flex;gap:26px}
+@media(max-width:760px){.fgrid{grid-template-columns:1fr;gap:34px}form{grid-template-columns:1fr}}
+
+/* DETAIL PAGE */
+.btn{display:inline-block;line-height:1.3}
+a.ph{display:block}
+.pb h3 a{transition:opacity .3s}.pb h3 a:hover{opacity:.7}
+.spec em{font-style:normal}
+.detail{padding:34px 0 80px}
+.crumb{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:11px;color:var(--dim);margin-bottom:28px}
+.crumb a{color:#c9c9cc;display:inline-flex;gap:8px;align-items:center;transition:color .25s}.crumb a:hover{color:#fff}
+.dgrid{display:grid;grid-template-columns:1.1fr 1fr;gap:44px;align-items:start}
+.dstage{position:relative;aspect-ratio:1;border-radius:10px;overflow:hidden;border:1px solid var(--line);display:grid;place-items:center}
+.dstage .bgd{position:absolute;inset:0}
+.dstage .dw{position:relative;width:86%;height:86%;transition:transform 1s cubic-bezier(.2,.8,.2,1);filter:drop-shadow(0 30px 30px rgba(0,0,0,.6))}
+.dw svg{width:100%;height:100%;display:block}
+.dstage[data-v=front] .dw{transform:rotate(var(--ft))}
+.dstage[data-v=angle] .dw{transform:none}
+.dstage[data-v=macro] .dw{transform:rotate(var(--ft)) scale(2.1)}
+.thumbs{display:flex;gap:8px;margin-top:14px}
+.th{background:transparent;border:1px solid var(--line);border-radius:99px;padding:6px 18px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#a0a0a5;transition:all .3s}
+.th:hover{color:#fff;border-color:var(--line2)}.th.on{background:#fff;color:#000;border-color:#fff;font-weight:600}
+.dinfo .ref{display:block;margin-bottom:8px}
+.dinfo h1{font-family:var(--serif);font-size:clamp(30px,4.4vw,46px);letter-spacing:.06em;text-transform:uppercase;line-height:1.1;margin-bottom:14px}
+.dinfo .spec{font-size:11px;margin-bottom:22px}
+.dinfo .long{font-size:13px;color:#9a9aa0;line-height:1.85;margin:0 0 22px;max-width:480px}
+.hl{list-style:none;padding:0;margin:0 0 26px;display:grid;gap:10px}
+.hl li{display:flex;gap:12px;align-items:flex-start;font-size:12px;color:#c9c9cc}
+.hl svg{flex:none;margin-top:3px}
+.buy{display:flex;align-items:center;gap:22px;flex-wrap:wrap;padding-top:22px;border-top:1px solid var(--line)}
+.buy .sbtn{display:inline-block;margin:0}
+.price small{display:block;font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;color:#66666b}
+.price b{font-family:var(--serif);font-size:18px;font-weight:600}
+.avail{font-size:9px;letter-spacing:.17em;text-transform:uppercase;color:#77777d}
+.dsec{margin-top:70px}
+.dsec h2{font-size:22px;margin-bottom:22px}
+.sgrid{display:grid;grid-template-columns:1fr 1fr;column-gap:44px;margin:0}
+.sgrid div{display:flex;justify-content:space-between;gap:20px;padding:15px 0;border-bottom:1px solid var(--line)}
+.sgrid dt{font-size:9.5px;letter-spacing:.17em;text-transform:uppercase;color:#77777d;flex:none}
+.sgrid dd{margin:0;font-size:12px;text-align:end}
+.pn{display:flex;justify-content:space-between;gap:16px;margin-top:50px;padding-top:22px;border-top:1px solid var(--line)}
+.pn a{display:flex;flex-direction:column;gap:4px;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#77777d;transition:color .3s}
+.pn a b{font-family:var(--serif);font-size:15px;letter-spacing:.08em;color:#fff;font-weight:600}
+.pn a:hover{color:#fff}.pn a.nx{text-align:end}
+@media(max-width:820px){.dgrid{grid-template-columns:1fr;gap:28px}.sgrid{grid-template-columns:1fr}}
+
+/* LANGUAGE */
+.lang{background:transparent;border:1px solid var(--line2);border-radius:99px;padding:5px 14px;font-size:11px;min-width:52px;transition:background .3s,color .3s}
+.lang:hover{background:#fff;color:#000}
+.flip{display:inline-block}
+
+/* ARABIC / RTL */
+html[dir=rtl] body{font-family:'Cairo',var(--display)}
+html[dir=rtl] *{letter-spacing:0!important;text-transform:none!important}
+html[dir=rtl] .logo{letter-spacing:.3em!important;font-family:var(--logo)}
+html[dir=rtl] h1,html[dir=rtl] h2,html[dir=rtl] h3{line-height:1.35}
+html[dir=rtl] .hero h1{line-height:1.3}
+html[dir=rtl] .pb h3,html[dir=rtl] .cap strong,html[dir=rtl] .gc strong,html[dir=rtl] .dinfo h1,html[dir=rtl] .pn a b,html[dir=rtl] .stats div,html[dir=rtl] .price b{font-family:'Amiri','Cairo',serif}
+html[dir=rtl] :is(.ref,.spec,.pf,.badge,.tab,.th,.gc small,.gc span,.cap small,.cap span,.stats small,.ci,.sub,.read,.eyebrow,.bar,.btn,.avail,.price small,.pn a,.sgrid dt,.crumb){font-size:11.5px!important}
+html[dir=rtl] :is(.pb p,.f p,.panel p,.about p,.fgrid p,.lead,.galhead p,.hero p,.hl li,.dinfo .long,.sgrid dd){font-size:13px!important;line-height:1.95!important}
+html[dir=rtl] .links a{font-size:13px}
+html[dir=rtl] .f .n{right:auto;left:14px}
+html[dir=rtl] .badge{left:auto;right:12px}
+html[dir=rtl] .slider{direction:ltr}
+html[dir=rtl] .cap{direction:rtl}
+html[dir=rtl] .flip,html[dir=rtl] .read i{transform:scaleX(-1)}
+html[dir=rtl] .j:hover .read i{transform:translateX(-5px) scaleX(-1)}
+html[dir=rtl] .ref{unicode-bidi:plaintext}
+html[dir=rtl] .gc{text-align:start}
+html[dir=rtl] .stats div{unicode-bidi:plaintext}
+
+/* reveal */
+.js .rv{opacity:0;transform:translateY(34px);transition:opacity 1s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1);transition-delay:var(--d,0s)}
+.js .rv.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.js .rv{opacity:1;transform:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a class="logo" href="#home">CHRONOCRAZE</a>
+    <nav class="links" id="links">
+      <a href="#home" class="on">Home</a><a href="#about">About Us</a><a href="#craft">Craftsmanship</a><a href="#collection">Collection</a><a href="#gallery">Gallery</a><a href="#blog">Blog</a>
+    </nav>
+    <div class="nav-r">
+      <button class="lang" id="lang" type="button" aria-label="Language">عربي</button>
+      <a class="pill" href="#contact">Contact</a>
+      <span class="avatar" aria-label="Account"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-5 15-5 16 0"/></svg></span>
+      <button class="burger" id="burger" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 24 24" stroke="#fff" stroke-width="2" fill="none"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="mainView">
+<section class="hero wrap" id="home">
+  <span class="eyebrow">Precision · Prestige · Perfection</span>
+  <h1>Where Elegance Meets<br><span class="shimmer">Craftsmanship</span></h1>
+  <p>Discover a world of sophistication, horology, and precision with our handpicked collection of luxury timepieces.</p>
+  <div class="stage"><div class="w" id="heroWatch" data-parallax="0.12"></div></div>
+  <i class="scrollcue"></i>
+</section>
+
+<section class="about" id="about">
+  <svg class="ghost" id="ghost" viewBox="0 0 400 400" aria-hidden="true"></svg>
+  <div class="wrap grid">
+    <div class="rv">
+      <span class="eyebrow" style="font-size:8px">Our Heritage</span>
+      <h2>About Us</h2>
+      <p>At <b>CHRONOCRAZE</b>, our relentless passion for haute horlogerie drives everything we create and curate. We bring together the world's finest mechanical timepieces—masterworks that embody timeless architectural elegance, dark minimalist aesthetics, and uncompromising engineering innovation.</p>
+      <p>Whether you seek an avant-garde skeleton tourbillon or a stealth obsidian chronograph, our private specialists are dedicated to connecting discerning collectors with the exact timepiece that commands their presence and complements their lifestyle.</p>
+      <a class="more" href="#contact">Contact us with</a>
+    </div>
+    <div class="slider rv" style="--d:.15s" id="slider">
+      <button class="arrow l" data-dir="-1" aria-label="Previous">‹</button>
+      <button class="arrow r" data-dir="1" aria-label="Next">›</button>
+    </div>
+  </div>
+</section>
+
+<section class="anat wrap" id="craft">
+  <div class="center rv">
+    <span class="eyebrow" style="font-size:8.5px">Horological Architecture</span>
+    <h2 class="sec">The Anatomy of <span class="grad">Perfection</span></h2>
+    <p class="lead" style="font-size:11px">Every timepiece is sculpted through 1,400 hours of micro-engineering, combining aerospace metallurgy with Geneva hand-finishing.</p>
+  </div>
+  <div class="feat" id="feat"></div>
+  <div class="card panel rv">
+    <div>
+      <span class="eyebrow" style="font-size:8px;letter-spacing:.2em;margin:0">In-House Manufacture · Geneva Seal</span>
+      <h3>412 Micro-Components Moving in Silent Harmony</h3>
+      <p>Our flagship bi-axial tourbillon rotates on two independent axes every 60 seconds, neutralizing the pull of Earth's gravity on the oscillator in any wrist position.</p>
+      <div class="stats" id="stats">
+        <div><span data-n="72">0</span> HRS<small>Power Reserve</small></div>
+        <div><span data-n="412">0</span><small>Finished Parts</small></div>
+        <div>-1/+<span data-n="1">0</span>S<small>Daily Precision</small></div>
+      </div>
+    </div>
+    <div class="w" id="panelWatch"></div>
+  </div>
+</section>
+
+<section class="coll wrap" id="collection">
+  <div class="center rv">
+    <span class="eyebrow" style="font-size:8.5px">Masterpiece Horology</span>
+    <h2 class="sec">Watch Types &amp; <span class="grad">Collection</span></h2>
+    <p class="lead" style="font-size:11px">Explore our six distinct horological archetypes—each engineered for a specific discipline of luxury craftsmanship.</p>
+  </div>
+  <div class="tabs rv" id="tabs">
+    <button class="tab on" data-f="all">All Timepieces</button><button class="tab" data-f="skeleton">Skeleton Tourbillon</button><button class="tab" data-f="chrono">Chronographs</button><button class="tab" data-f="diver">Deep-Sea Diver</button><button class="tab" data-f="dress">Celestial &amp; Dress</button>
+  </div>
+  <div class="pgrid" id="pgrid"></div>
+</section>
+
+<section class="gal wrap" id="gallery">
+  <div class="galhead rv">
+    <div><span class="eyebrow" style="font-size:8.5px">Visual Exhibition</span><h2 class="sec">Macro Horology <span class="grad">Gallery</span></h2></div>
+    <p>Low-key studio photography capturing hand-polished chamfers and dark metallic reflections.</p>
+  </div>
+  <div class="bento" id="bento"></div>
+</section>
+
+<section class="jour wrap" id="blog">
+  <div class="center rv">
+    <span class="eyebrow" style="font-size:8.5px">Editorial &amp; Insights</span>
+    <h2 class="sec">The Horology <span class="grad">Journal</span></h2>
+  </div>
+  <div class="jgrid" id="jgrid"></div>
+</section>
+</main>
+<section class="wrap detail" id="detail" hidden></section>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="fgrid">
+      <div class="rv">
+        <span class="logo">CHRONOCRAZE</span>
+        <p>Private haute horlogerie salon dedicated to bespoke commissions, rare allocations, and museum-grade mechanical timepieces.</p>
+        <div class="ci"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2"><path d="M12 22s7-7 7-13a7 7 0 1 0-14 0c0 6 7 13 7 13z"/><circle cx="12" cy="9" r="2.5"/></svg>Rue du Rhône 42, Geneva • Dubai DIFC • London Mayfair</div>
+        <div class="ci"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>concierge@chronocraze.luxury</div>
+      </div>
+      <div class="rv" style="--d:.12s">
+        <h4>Request a Private Salon Viewing</h4>
+        <p class="sub">Schedule a confidential appointment with our master horologist.</p>
+        <form id="form" autocomplete="off">
+          <input id="fn" placeholder="Full name" aria-label="Full name" required>
+          <input id="fe" type="email" placeholder="Email address" aria-label="Email address" required>
+          <select id="ft" aria-label="Select timepiece"><option>Select Timepiece</option><option>Apex Eclipse Tourbillon</option><option>Vortex Carbon Chrono</option><option>Abyssal Stealth 300M</option><option>Celestia Perpetual</option><option>Monolith Ultra-Thin</option><option>Phantom Sapphire X</option></select>
+          <select id="fs" aria-label="Preferred salon"><option>Preferred Salon</option><option>Geneva</option><option>Dubai DIFC</option><option>London Mayfair</option></select>
+          <button class="sbtn" type="submit">Book Private Consultation</button>
+          <p class="ok" id="ok" role="status"></p>
+        </form>
+      </div>
+    </div>
+    <div class="bar"><span>© 2026 CHRONOCRAZE Haute Horlogerie. All Rights Reserved.</span><nav><a href="#home">Privacy Policy</a><a href="#home">Authenticity Guarantee</a></nav></div>
+  </div>
+</footer>
+
+<script>
+document.documentElement.classList.add('js');
+let uid=0;
+/* Original SVG watch illustrations */
+function watch(o){
+  o=Object.assign({dial:'#1a1a1c',dial2:'#0a0a0b',ring:'#6b6b70',strap:'bracelet',hand:'#f1f1f1',idx:'#eee',sub:false,moon:false,skel:false,tilt:-14,glass:true},o);
+  const id='w'+(uid++);
+  let strap='';
+  if(o.strap==='leather'){
+    strap=`<defs><linearGradient id="${id}s" x1="0" x2="1"><stop offset="0" stop-color="#5a0508"/><stop offset=".45" stop-color="#c3141f"/><stop offset="1" stop-color="#4a0407"/></linearGradient></defs>
+    <path d="M148 40 Q200 20 252 40 L262 118 H138Z" fill="url(#${id}s)"/><path d="M138 282 H262 L252 360 Q200 380 148 360Z" fill="url(#${id}s)"/>
+    <path d="M156 48 Q200 32 244 48" stroke="#ff9aa0" stroke-opacity=".35" fill="none" stroke-dasharray="3 4"/><path d="M156 352 Q200 368 244 352" stroke="#ff9aa0" stroke-opacity=".35" fill="none" stroke-dasharray="3 4"/>`;
+  }else if(o.strap==='rubber'){
+    strap=`<path d="M146 40 Q200 22 254 40 L262 120 H138Z" fill="#111"/><path d="M138 280 H262 L254 360 Q200 378 146 360Z" fill="#111"/>`+[0,1,2,3,4,5].map(i=>`<path d="M${150+i*0} ${66+i*9}h100" stroke="#222" stroke-width="2"/>`).join('');
+  }else if(o.strap==='white'){
+    strap=`<path d="M150 20 Q200 8 250 20 L262 120 H138Z" fill="#f2f2f5"/><path d="M138 280 H262 L250 380 Q200 392 150 380Z" fill="#f2f2f5"/>`;
+  }else{
+    for(let i=0;i<5;i++){strap+=`<rect x="146" y="${108-i*19}" width="108" height="16" rx="3" fill="${o.ring}" opacity="${.95-i*.12}"/><rect x="146" y="${276+i*19}" width="108" height="16" rx="3" fill="${o.ring}" opacity="${.95-i*.12}"/><path d="M150 ${112-i*19}h100M150 ${280+i*19}h100" stroke="#000" stroke-opacity=".35"/>`}
+  }
+  let idx='';
+  for(let i=0;i<12;i++){const a=i*30;idx+=`<rect x="198" y="${i%3===0?62:64}" width="${i%3===0?5:3}" height="${i%3===0?20:14}" rx="1" fill="${o.idx}" transform="rotate(${a} 200 200)" ${i%3===0?'transform-origin="200 200"':''}/>`}
+  idx=idx.replace(/x="198"/g,'x="198.5"');
+  const subs=o.sub?`<g stroke="${o.hand}" stroke-opacity=".5" fill="${o.dial2}"><circle cx="165" cy="200" r="22"/><circle cx="235" cy="200" r="22"/><circle cx="200" cy="238" r="22"/></g><g stroke="${o.hand}" stroke-width="1.5"><path d="M165 200l8-9M235 200l-6-12M200 238l-7 10"/></g>`:'';
+  const skel=o.skel?`<circle cx="200" cy="215" r="34" fill="#050506" stroke="${o.ring}" stroke-width="1.5"/><circle cx="200" cy="215" r="22" fill="none" stroke="#c0a58a" stroke-opacity=".7" stroke-dasharray="4 3"/><circle cx="200" cy="215" r="6" fill="#c0a58a"/>`:'';
+  const moon=o.moon?`<circle cx="200" cy="244" r="26" fill="#050506" stroke="${o.ring}"/><path d="M188 244a14 14 0 1 0 24 0a11 11 0 1 1-24 0z" fill="#d9d9de"/>`:'';
+  return `<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Luxury watch"><g transform="rotate(${o.tilt} 200 200)">
+  ${strap}
+  <rect x="318" y="190" width="14" height="20" rx="4" fill="${o.ring}"/>
+  <defs><radialGradient id="${id}d" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="${o.dial}"/><stop offset="1" stop-color="${o.dial2}"/></radialGradient>
+  <linearGradient id="${id}r" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ddd"/><stop offset=".4" stop-color="${o.ring}"/><stop offset="1" stop-color="#111"/></linearGradient></defs>
+  <circle cx="200" cy="200" r="132" fill="url(#${id}r)"/><circle cx="200" cy="200" r="120" fill="#080808"/><circle cx="200" cy="200" r="112" fill="url(#${id}d)"/>
+  ${idx}${subs}${skel}${moon}
+  <text x="200" y="118" text-anchor="middle" font-size="9" letter-spacing="3" fill="${o.hand}" opacity=".7" font-family="Cinzel,serif">CHRONOCRAZE</text>
+  <g class="hands"><rect x="197" y="118" width="6" height="88" rx="3" fill="${o.hand}" transform="rotate(-38 200 200)"/><rect x="198" y="88" width="4" height="118" rx="2" fill="${o.hand}" transform="rotate(62 200 200)"/><rect x="199.3" y="82" width="1.4" height="140" fill="#d33" transform="rotate(168 200 200)"/><circle cx="200" cy="200" r="5" fill="${o.hand}"/></g>
+  ${o.glass?`<path d="M110 150a98 98 0 0 1 180-20a140 140 0 0 0-180 20z" fill="#fff" opacity=".07"/>`:''}
+  </g></svg>`;
+}
+const W={
+  steel:()=>watch({dial:'#2a2b2e',dial2:'#0c0c0d',ring:'#84848a',strap:'bracelet'}),
+  hero:()=>watch({dial:'#3a3b3f',dial2:'#101012',ring:'#8d8d92',strap:'bracelet',tilt:-18}),
+  cream:()=>watch({dial:'#f3e4dc',dial2:'#d8bfb3',ring:'#c8c8cc',strap:'leather',hand:'#1a1a1a',idx:'#222',skel:true,tilt:-8}),
+  cream2:()=>watch({dial:'#f4e8e0',dial2:'#d9c4b8',ring:'#cfcfd3',strap:'leather',hand:'#1a1a1a',idx:'#222',sub:true,tilt:-6}),
+  dive:()=>watch({dial:'#222',dial2:'#050505',ring:'#a0a0a5',strap:'bracelet',idx:'#cfe8ff',tilt:-10}),
+  night:()=>watch({dial:'#241d2a',dial2:'#07060a',ring:'#6a6a72',strap:'rubber',moon:true,idx:'#ddd',tilt:-12}),
+  chrono:()=>watch({dial:'#1d1d22',dial2:'#060607',ring:'#7e7e86',strap:'rubber',sub:true,idx:'#eee',tilt:-16}),
+  white:()=>watch({dial:'#1c1c1e',dial2:'#0a0a0a',ring:'#e8e8ec',strap:'white',hand:'#fff',tilt:0,glass:false}),
+  sapph:()=>watch({dial:'#d8c9bd',dial2:'#a99485',ring:'#d5d5d9',strap:'leather',hand:'#111',idx:'#111',skel:true,tilt:-4})
+};
+const BG={
+  dark:'radial-gradient(circle at 50% 40%,#2a2a2e,#050505 72%)',
+  red:'linear-gradient(170deg,#3a0b0e 0%,#a3121c 45%,#1a0305 100%)',
+  redglow:'radial-gradient(ellipse at 50% 85%,#c4202b,#4a0a0e 45%,#140304 80%)',
+  stone:'radial-gradient(circle at 70% 30%,#3b332e,#0a0908 70%)',
+  light:'linear-gradient(160deg,#dcdbe3,#b9b7c6)',
+  plum:'radial-gradient(circle at 50% 40%,#2c1c1f,#080506 70%)'
+};
+function mount(sel,svg){const e=document.querySelector(sel);if(e)e.innerHTML=svg}
+
+/* hero / panel / ghost */
+mount('#heroWatch',W.hero());
+mount('#panelWatch',W.cream());
+document.getElementById('ghost').innerHTML=(()=>{let t='';for(let i=0;i<12;i++){t+=`<text x="200" y="64" text-anchor="middle" fill="#fff" font-size="26" font-family="Cinzel,serif" transform="rotate(${i*30} 200 200)">${i===0?12:i}</text>`}return `<circle cx="200" cy="200" r="190" fill="none" stroke="#fff" stroke-width="2"/><circle cx="200" cy="200" r="150" fill="none" stroke="#fff"/>${t}<rect x="196" y="90" width="8" height="112" fill="#fff" transform="rotate(30 200 200)"/><rect x="197" y="60" width="6" height="142" fill="#fff" transform="rotate(100 200 200)"/>`})();
+
+/* about slider */
+const slides=[
+  {bg:BG.redglow,w:W.cream2(),k:'Caliber CC-9017 · Skeleton',t:'Obsidian Tourbillon Monolith',d:'Hand-finished titanium bridges over a flying one-minute tourbillon.'},
+  {bg:BG.stone,w:W.chrono(),k:'Stealth Edition · 300M Water Resistant',t:'Nocturne Skeleton Chronograph',d:'Forged carbon bezel paired with Super-LumiNova® X1 indices.',cap:1},
+  {bg:BG.red,w:W.steel(),k:'In-House Movement',t:'28,800 Vibrations / Hour',d:'A balance wheel that beats four times every second, all day long.',gear:1}
+];
+const sl=document.getElementById('slider');
+slides.forEach((s,i)=>{const d=document.createElement('div');d.className='slide'+(i?'':' on');
+  d.innerHTML=`<div class="bg" style="background:${s.bg}"></div><div class="w">${s.w}</div>${s.gear?'<div class="gear"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg></div>':''}<div class="cap"><small>${s.k}</small><strong>${s.t}</strong><span>${s.d}</span></div>`;
+  sl.insertBefore(d,sl.querySelector('.arrow'))});
+let si=0,timer;
+function go(n){const all=sl.querySelectorAll('.slide');all[si].classList.remove('on');si=(n+all.length)%all.length;all[si].classList.add('on')}
+function auto(){clearInterval(timer);timer=setInterval(()=>go(si+1),4800)}
+sl.querySelectorAll('.arrow').forEach(b=>b.addEventListener('click',()=>{go(si+ +b.dataset.dir);auto()}));
+auto();
+
+/* anatomy features */
+const feats=[
+ ['Domed Sapphire Crystal','Machined from solid corundum rated at 9 Mohs hardness with dual anti-reflective ghost coating.','<path d="M6 3h12l4 6-10 12L2 9z"/><path d="M2 9h20M12 21 8 9l4-6 4 6z"/>'],
+ ['Openworked Calibre','Skeletonized titanium bridges hand-beveled to expose the beating balance wheel and twin barrels.','<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/>'],
+ ['Forged Carbon & DLC','Ultra-lightweight monolithic cases with Diamond-Like Carbon coating for scratchproof finishing.','<path d="M12 2 4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5z"/>'],
+ ['Super-LumiNova® X1','Swiss-grade pigments infused into hand-layered indices that glow for twelve hours in total darkness.','<circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>']
+];
+document.getElementById('feat').innerHTML=feats.map((f,i)=>`<div class="card f rv" style="--d:${i*.12}s"><span class="n">0${i+1}</span><div class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${f[2]}</svg></div><h3>${f[0]}</h3><p>${f[1]}</p></div>`).join('');
+
+/* collection */
+const prods=[
+ {c:'skeleton',b:'Skeleton Tourbillon',ref:'Ref. CC-9017 • Limited Edition',n:'Apex Eclipse Tourbillon',s:['42mm Titanium','Manual Wind'],d:'Flying one-minute tourbillon suspended between matte black PVD bridges with luminescent hands.',f:'Bespoke Allocation',bg:BG.red,w:W.steel()},
+ {c:'chrono',b:'F-Stack Chronograph',ref:'Ref. CC-7400 • Tachymeter Bezel',n:'Vortex Carbon Chrono',s:['44mm Forged Carbon','1/10th Sec'],d:'High-frequency column-wheel flyback chronograph inspired by endurance motorsport telemetry.',f:'Atelier Series',bg:BG.dark,w:W.cream2()},
+ {c:'diver',b:'300M Submersible',ref:'Ref. CC-3000 • Helium Valve',n:'Abyssal Stealth 300M',s:['43mm Ceramic','300M Depth'],d:'Unidirectional laser-engraved ceramic bezel with triple-gasket crowns built for saturation diving.',f:'Deep-Sea Spec',bg:BG.redglow,w:W.dive()},
+ {c:'dress',b:'Perpetual Moonphase',ref:'Ref. CC-880F • Meteorite Dial',n:'Celestia Perpetual',s:['40mm Platinum','122-Yr Moon'],d:'Astronomical perpetual calendar featuring a Gibeon meteorite moon disc over an obsidian dial.',f:'Grand Complication',bg:BG.stone,w:W.night()},
+ {c:'dress',b:'Ultra-Thin 4mm',ref:'Ref. CC-110M • Micro-Rotor',n:'Monolith Ultra-Thin',s:['39mm White Sand','5.4mm Thin'],d:'Pure architectural minimalism with a light-absorbing dial and solid platinum micro-rotor.',f:'Sovereign Dress',bg:BG.light,w:W.white()},
+ {c:'skeleton',b:'Sapphire Monobloc',ref:'Ref. CC-9995 • Piece Unique',n:'Phantom Sapphire X',s:['43mm Sapphire','3t Axial'],d:'360-degree visibility housed in a smoked black sapphire crystal case milled over 900 CNC hours.',f:'Piece Unique',bg:BG.plum,w:W.sapph()}
+];
+const extra=[
+ {slug:'apex-eclipse',long:'A flying one-minute tourbillon floats between matte black PVD bridges, hand-beveled and polished over 140 hours. Limited to 88 pieces, each allocated by private appointment.',hl:['Flying tourbillon visible through the dial','Hand-beveled titanium bridges','Luminescent hands and indices'],sp:['42mm grade 5 titanium, matte PVD','Manual-wind flying tourbillon, Cal. CC-9017','96 hours','50 m','Domed sapphire, anti-reflective','Titanium bracelet, folding clasp']},
+ {slug:'vortex-carbon',long:'Built around a column-wheel flyback chronograph that resets and restarts in a single push. The forged carbon case weighs less than a third of steel and carries a tachymeter bezel for motorsport timing.',hl:['Column-wheel flyback chronograph','Forged carbon case, ceramic pushers','Tachymeter bezel reading to 1/10th second'],sp:['44mm forged carbon, ceramic pushers','Automatic column-wheel flyback chronograph, Cal. CC-7400','72 hours','100 m','Domed sapphire, anti-reflective','Red leather strap, folding clasp']},
+ {slug:'abyssal-stealth',long:'A saturation-diving watch in black ceramic. The laser-engraved unidirectional bezel and triple-gasket crown keep it sealed to 300 metres, with a helium escape valve for decompression.',hl:['Laser-engraved ceramic bezel','Helium escape valve','Triple-gasket screw-down crown'],sp:['43mm ceramic, helium escape valve','Automatic diver movement, Cal. CC-3000','80 hours','300 m','Flat sapphire, anti-reflective','Ceramic-coated bracelet, diver extension']},
+ {slug:'celestia-perpetual',long:'A perpetual calendar that needs no correction until the year 2100. A Gibeon meteorite moon disc rotates over an obsidian dial and keeps the lunar phase accurate to one day in 122 years.',hl:['Perpetual calendar through 2100','Gibeon meteorite moon disc','Platinum case, hand-finished'],sp:['40mm platinum, meteorite moon disc','Automatic perpetual calendar, Cal. CC-880F','72 hours','30 m','Domed sapphire, anti-reflective','Night-blue rubber strap, folding clasp']},
+ {slug:'monolith-ultra-thin',long:'At 5.4mm thick, the Monolith is a study in restraint. A solid platinum micro-rotor sits flush inside the movement, and the light-absorbing dial removes everything that is not time.',hl:['5.4mm total case height','Solid platinum micro-rotor','Light-absorbing matte dial'],sp:['39mm white-sand ceramic, 5.4mm thick','Micro-rotor automatic, Cal. CC-110M','60 hours','30 m','Flat sapphire, anti-reflective','White rubber strap, pin buckle']},
+ {slug:'phantom-sapphire',long:'The entire case is milled from one block of smoked sapphire over 900 CNC hours, so the tri-axial tourbillon is visible from every angle. Only one piece will ever be made.',hl:['Smoked sapphire monobloc case','Tri-axial tourbillon','Piece unique, numbered and signed'],sp:['43mm smoked sapphire monobloc','Manual-wind tri-axial tourbillon, Cal. CC-9995','120 hours','50 m','Smoked sapphire, anti-reflective','Red leather strap, folding clasp']}
+];
+prods.forEach((p,i)=>Object.assign(p,extra[i]));
+const pg=document.getElementById('pgrid');
+pg.innerHTML=prods.map((p,i)=>`<article class="card p rv" data-c="${p.c}" style="--d:${(i%3)*.12}s"><a class="ph" href="#watch-${p.slug}" aria-label="${p.n}"><span class="badge">${p.b}</span><div class="bg" style="background:${p.bg}"></div><div class="w">${p.w}</div></a><div class="pb"><div class="ref">${p.ref}</div><h3><a href="#watch-${p.slug}">${p.n}</a></h3><div class="spec"><span>◦ <em>${p.s[0]}</em></span><span>⚡ <em>${p.s[1]}</em></span></div><p>${p.d}</p><div class="pf"><span>${p.f}</span><a class="btn" href="#watch-${p.slug}">Discover Craft</a></div></div></article>`).join('');
+document.getElementById('tabs').addEventListener('click',e=>{
+  const t=e.target.closest('.tab');if(!t)return;
+  document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x===t));
+  const f=t.dataset.f;
+  pg.querySelectorAll('.p').forEach(c=>{const show=f==='all'||c.dataset.c===f;c.classList.toggle('off',!show);
+    if(show){c.style.opacity=0;c.style.transform='translateY(20px)';requestAnimationFrame(()=>requestAnimationFrame(()=>{c.style.opacity=1;c.style.transform='none'}))}});
+});
+
+/* gallery */
+const gal=[
+ {cls:'tall',k:'Exhibition 01',t:'Chiaroscuro Bezel Reflections',d:'Hand-polished chamfers catching a single studio key light.',bg:BG.red,w:W.steel()},
+ {cls:'',k:'Macro Detail',t:'Tactile Chronograph Pushers',d:'Knurled pushers machined to a tenth of a millimetre.',bg:BG.dark,w:W.cream2()},
+ {cls:'',k:'Exhibition 03',t:'The Heartbeat Escapement',d:'Swiss lever escapement beating at 28,800 vph.',bg:BG.redglow,w:W.cream()},
+ {cls:'wide',k:'Exhibition 04',t:'Architectural Wrist Presence',d:'A stealth chronograph carried in the hand, lit from above.',bg:BG.stone,w:W.chrono()}
+];
+document.getElementById('bento').innerHTML=gal.map((g,i)=>`<figure class="g ${g.cls} rv" style="margin:0;--d:${i*.1}s"><div class="bg" style="background:${g.bg}"></div><div class="w">${g.w}</div><figcaption class="gc"><small>${g.k}</small><strong>${g.t}</strong><span>${g.d}</span></figcaption></figure>`).join('');
+
+/* journal */
+const posts=[
+ {k:'Horological Engineering • 8 min read',t:'Why the Bi-Axial Tourbillon Remains the Ultimate Complication',d:'How rotating the balance wheel cage across two planes conquers rate errors.',bg:BG.dark,w:W.cream()},
+ {k:'Material Science • 5 min read',t:'Forged Carbon vs. Grade 5 DLC Titanium in Stealth Watchmaking',d:'Comparing weight-to-strength ratios and light absorption in dark watch cases.',bg:BG.plum,w:W.steel()},
+ {k:"Collector's Vault • 6 min read",t:'Curating a Sovereign Collection: Independent Ateliers to Watch',d:'Why low-production master watchmakers command unprecedented admiration.',bg:BG.redglow,w:W.cream2()}
+];
+document.getElementById('jgrid').innerHTML=posts.map((p,i)=>`<article class="card p j rv" style="--d:${i*.12}s"><div class="ph"><div class="bg" style="background:${p.bg}"></div><div class="w">${p.w}</div></div><div class="pb"><div class="ref">${p.k}</div><h3>${p.t}</h3><p>${p.d}</p><span class="read">Read Monograph <i>→</i></span></div></article>`).join('');
+
+/* form */
+document.getElementById('form').addEventListener('submit',e=>{e.preventDefault();
+  const n=document.getElementById('fn').value.trim().split(' ')[0];
+  document.getElementById('ok').textContent=(window.LANG==='ar'?`شكرًا${n?' '+n:''}. تم تسجيل طلبك، وسيتواصل معك أحد مساعدينا لتأكيد موعد الزيارة.`:`Thank you${n?', '+n:''}. Your request is noted. A concierge will confirm your viewing.`);e.target.reset()});
+
+/* cursor glow on cards */
+document.addEventListener('pointermove',e=>{const c=e.target.closest&&e.target.closest('.card');if(!c)return;const r=c.getBoundingClientRect();c.style.setProperty('--mx',(e.clientX-r.left)+'px');c.style.setProperty('--my',(e.clientY-r.top)+'px')});
+
+/* reveal on scroll */
+const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}}),{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+
+/* count-up */
+const so=new IntersectionObserver(es=>es.forEach(x=>{if(!x.isIntersecting)return;so.disconnect();
+  x.target.querySelectorAll('[data-n]').forEach(el=>{const to=+el.dataset.n,t0=performance.now();(function f(t){const p=Math.min(1,(t-t0)/1600);el.textContent=Math.round(to*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(f)})(t0)})}),{threshold:.5});
+so.observe(document.getElementById('stats'));
+
+/* nav: scrollspy, solid, parallax */
+const links=[...document.querySelectorAll('#links a')];
+const ids=['home','about','craft','collection','gallery','blog'];
+function onScroll(){
+  const y=scrollY;document.getElementById('nav').classList.toggle('solid',y>40);
+  if(window.__detail){links.forEach((a,i)=>a.classList.toggle('on',i===3));return}
+  let cur=0;ids.forEach((id,i)=>{const el=document.getElementById(id);if(el&&el.getBoundingClientRect().top<innerHeight*.4)cur=i});
+  links.forEach((a,i)=>a.classList.toggle('on',i===cur));
+  const hw=document.getElementById('heroWatch');if(hw&&y<900)hw.style.translate=`0 ${y*.12}px`;
+  const g=document.getElementById('ghost');const gr=g.parentElement.getBoundingClientRect();g.style.transform=`translate(-50%,-50%) rotate(${(gr.top)*-.03}deg)`;
+}
+addEventListener('scroll',onScroll,{passive:true});onScroll();
+document.getElementById('burger').addEventListener('click',()=>document.getElementById('nav').classList.toggle('open'));
+links.forEach(a=>a.addEventListener('click',()=>document.getElementById('nav').classList.remove('open')));
+
+/* ---------- Watch detail pages ---------- */
+const mainV=document.getElementById('mainView'),dt=document.getElementById('detail');
+window.__detail=false;
+const CHK='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" stroke-opacity=".35"/><path d="m7.5 12.5 3 3 6-7"/></svg>';
+const LBL=['Case','Movement','Power Reserve','Water Resistance','Crystal','Strap'];
+function showDetail(slug){
+  const i=prods.findIndex(p=>p.slug===slug);if(i<0)return false;
+  const p=prods[i],tm=+((p.w.match(/rotate\((-?\d+) 200 200\)/)||[0,0])[1]);
+  const prev=prods[(i+5)%6],next=prods[(i+1)%6],more=[1,2,3].map(d=>prods[(i+d)%6]);
+  window.__detail=true;mainV.hidden=true;dt.hidden=false;
+  dt.innerHTML=`
+  <div class="crumb"><a href="#collection"><i class="flip">←</i> Back to Collection</a><span><span>Collection</span> / <span>${p.n}</span></span></div>
+  <div class="dgrid">
+    <div class="rv">
+      <div class="dstage" id="dstage" data-v="front" style="--ft:${-tm}deg"><div class="bgd" style="background:${p.bg}"></div><span class="badge">${p.b}</span><div class="dw">${p.w}</div></div>
+      <div class="thumbs" id="thumbs"><button class="th on" data-v="front">Front</button><button class="th" data-v="angle">Angle</button><button class="th" data-v="macro">Macro</button></div>
+    </div>
+    <div class="dinfo rv" style="--d:.12s">
+      <span class="ref">${p.ref}</span>
+      <h1>${p.n}</h1>
+      <div class="spec"><span>◦ <em>${p.s[0]}</em></span><span>⚡ <em>${p.s[1]}</em></span></div>
+      <p class="long">${p.long}</p>
+      <ul class="hl">${p.hl.map(h=>`<li>${CHK}<span>${h}</span></li>`).join('')}</ul>
+      <div class="buy"><div class="price"><small>Price</small><b>On request</b></div><a class="sbtn" href="#contact" id="dbook">Book Private Consultation</a><span class="avail">${p.f}</span></div>
+    </div>
+  </div>
+  <div class="dsec rv"><h2>Specifications</h2><dl class="sgrid">${LBL.map((l,k)=>`<div><dt>${l}</dt><dd>${p.sp[k]}</dd></div>`).join('')}</dl></div>
+  <div class="dsec"><h2 class="rv">You May Also Admire</h2><div class="pgrid">${more.map((q,k)=>`<article class="card p rv" style="--d:${k*.12}s"><a class="ph" href="#watch-${q.slug}" aria-label="${q.n}"><span class="badge">${q.b}</span><div class="bg" style="background:${q.bg}"></div><div class="w">${q.w}</div></a><div class="pb"><div class="ref">${q.ref}</div><h3><a href="#watch-${q.slug}">${q.n}</a></h3><div class="spec"><span>◦ <em>${q.s[0]}</em></span><span>⚡ <em>${q.s[1]}</em></span></div><p>${q.d}</p><div class="pf"><span>${q.f}</span><a class="btn" href="#watch-${q.slug}">Discover Craft</a></div></div></article>`).join('')}</div></div>
+  <div class="pn"><a href="#watch-${prev.slug}"><span><i class="flip">←</i> Previous</span><b>${prev.n}</b></a><a class="nx" href="#watch-${next.slug}"><span>Next <i class="flip">→</i></span><b>${next.n}</b></a></div>`;
+  dt.querySelectorAll('.rv').forEach(el=>io.observe(el));
+  document.getElementById('thumbs').addEventListener('click',e=>{const b=e.target.closest('.th');if(!b)return;
+    document.querySelectorAll('.th').forEach(x=>x.classList.toggle('on',x===b));document.getElementById('dstage').dataset.v=b.dataset.v});
+  document.getElementById('dbook').addEventListener('click',()=>{document.getElementById('ft').selectedIndex=i+1});
+  links.forEach((a,k)=>a.classList.toggle('on',k===3));
+  if(LANG==='ar')applyLang(dt);
+  return true;
+}
+let wasDetail=false;
+function route(){
+  const h=decodeURIComponent(location.hash.slice(1));
+  const m=h.match(/^watch-([a-z0-9-]+)$/);
+  if(m&&showDetail(m[1])){wasDetail=true;scrollTo({top:0,behavior:'instant'});return}
+  if(window.__detail){
+    if(h==='contact')return;
+    window.__detail=false;dt.hidden=true;dt.innerHTML='';mainV.hidden=false;
+    const el=h&&document.getElementById(h);
+    if(el)el.scrollIntoView({behavior:'instant'});else scrollTo({top:0,behavior:'instant'});
+    onScroll();
+  }
+}
+addEventListener('hashchange',route);
+
+/* ---------- Arabic / RTL ---------- */
+window.LANG='en';
+const T={
+"Home":"الرئيسية","About Us":"من نحن","Craftsmanship":"الحرفية","Collection":"المجموعة","Gallery":"المعرض","Blog":"المدونة","Contact":"تواصل",
+"Precision · Prestige · Perfection":"الدقة · الفخامة · الإتقان",
+"Where Elegance Meets":"حيث تلتقي الأناقة",
+"Discover a world of sophistication, horology, and precision with our handpicked collection of luxury timepieces.":"اكتشف عالمًا من الرقيّ وفن صناعة الساعات والدقة مع مجموعتنا المختارة بعناية من الساعات الفاخرة.",
+"Our Heritage":"إرثنا","At":"في",
+", our relentless passion for haute horlogerie drives everything we create and curate. We bring together the world's finest mechanical timepieces—masterworks that embody timeless architectural elegance, dark minimalist aesthetics, and uncompromising engineering innovation.":"، شغفنا الدائم بصناعة الساعات الراقية هو ما يقودنا في كل ما نصنعه وننتقيه. نجمع أرقى الساعات الميكانيكية في العالم، تحفًا تجسّد أناقة معمارية خالدة وجماليات داكنة بسيطة وابتكارًا هندسيًا لا يقبل التنازل.",
+"Whether you seek an avant-garde skeleton tourbillon or a stealth obsidian chronograph, our private specialists are dedicated to connecting discerning collectors with the exact timepiece that commands their presence and complements their lifestyle.":"سواء كنت تبحث عن توربيون هيكلي طليعي أو كرونوغراف بلون السبج الداكن، فإن مختصينا الخاصين مكرّسون لربط المقتنين أصحاب الذوق الرفيع بالساعة التي تعبّر عن حضورهم وتناسب أسلوب حياتهم.",
+"Contact us with":"تواصل معنا",
+"Caliber CC-9017 · Skeleton":"الحركة CC-9017 · هيكلية","Obsidian Tourbillon Monolith":"مونوليث توربيون السبج","Hand-finished titanium bridges over a flying one-minute tourbillon.":"جسور تيتانيوم مصقولة يدويًا فوق توربيون طائر بدورة دقيقة واحدة.",
+"Stealth Edition · 300M Water Resistant":"إصدار ستيلث · مقاومة للماء حتى 300 متر","Nocturne Skeleton Chronograph":"كرونوغراف نوكترن الهيكلي","Forged carbon bezel paired with Super-LumiNova® X1 indices.":"حلقة كربون مطروق مع مؤشرات Super-LumiNova® X1.",
+"In-House Movement":"حركة مصنّعة داخليًا","28,800 Vibrations / Hour":"28,800 اهتزازة / الساعة","A balance wheel that beats four times every second, all day long.":"عجلة توازن تنبض أربع مرات كل ثانية على مدار اليوم.",
+"Horological Architecture":"عمارة الساعات","The Anatomy of":"تشريح","Perfection":"الإتقان",
+"Every timepiece is sculpted through 1,400 hours of micro-engineering, combining aerospace metallurgy with Geneva hand-finishing.":"تُنحت كل ساعة عبر 1,400 ساعة من الهندسة الدقيقة، تجمع بين معادن الفضاء والتشطيب اليدوي الجنيفي.",
+"Domed Sapphire Crystal":"زجاج ياقوتي مقبّب","Machined from solid corundum rated at 9 Mohs hardness with dual anti-reflective ghost coating.":"مشغّل من الكورندوم الصلب بصلادة 9 موس مع طبقة مزدوجة مضادة للانعكاس.",
+"Openworked Calibre":"حركة مفتوحة الهيكل","Skeletonized titanium bridges hand-beveled to expose the beating balance wheel and twin barrels.":"جسور تيتانيوم مفرغة ومشطوفة يدويًا تكشف عجلة التوازن النابضة والبرميلين.",
+"Forged Carbon & DLC":"كربون مطروق وطلاء DLC","Ultra-lightweight monolithic cases with Diamond-Like Carbon coating for scratchproof finishing.":"علب أحادية فائقة الخفة بطلاء كربون شبيه بالألماس لتشطيب مقاوم للخدوش.",
+"Super-LumiNova® X1":"سوبر-لومينوفا® X1","Swiss-grade pigments infused into hand-layered indices that glow for twelve hours in total darkness.":"أصباغ سويسرية مدمجة في مؤشرات مطبّقة يدويًا تتوهج اثنتي عشرة ساعة في الظلام التام.",
+"In-House Manufacture · Geneva Seal":"تصنيع داخلي · ختم جنيف","412 Micro-Components Moving in Silent Harmony":"412 مكوّنًا دقيقًا تتحرك بانسجام صامت",
+"Our flagship bi-axial tourbillon rotates on two independent axes every 60 seconds, neutralizing the pull of Earth's gravity on the oscillator in any wrist position.":"توربيوننا الرائد ثنائي المحور يدور على محورين مستقلين كل 60 ثانية، ليلغي أثر جاذبية الأرض على المذبذب في أي وضع للمعصم.",
+"HRS":"ساعة","S":"ث","Power Reserve":"احتياطي الطاقة","Finished Parts":"قطعة مشطّبة","Daily Precision":"الدقة اليومية",
+"Masterpiece Horology":"تحف الساعات","Watch Types &":"أنواع الساعات و",
+"Explore our six distinct horological archetypes—each engineered for a specific discipline of luxury craftsmanship.":"استكشف نماذجنا الستة المتميزة، كل منها مصمم لفرع محدد من فنون الحرفية الفاخرة.",
+"All Timepieces":"كل الساعات","Chronographs":"كرونوغراف","Deep-Sea Diver":"غوص الأعماق","Celestial & Dress":"سماوية وكلاسيكية",
+"Apex Eclipse Tourbillon":"أبكس إكليبس توربيون","Vortex Carbon Chrono":"فورتكس كربون كرونو","Abyssal Stealth 300M":"أبيسال ستيلث 300 متر","Celestia Perpetual":"سيليستيا الدائمة","Monolith Ultra-Thin":"مونوليث فائقة النحافة","Phantom Sapphire X":"فانتوم سافاير إكس",
+"Skeleton Tourbillon":"توربيون هيكلي","F-Stack Chronograph":"كرونوغراف إف-ستاك","300M Submersible":"غوص حتى 300 متر","Perpetual Moonphase":"أطوار القمر الدائمة","Ultra-Thin 4mm":"فائقة النحافة 4 ملم","Sapphire Monobloc":"مونوبلوك ياقوتي",
+"Ref. CC-9017 • Limited Edition":"المرجع CC-9017 • إصدار محدود","Ref. CC-7400 • Tachymeter Bezel":"المرجع CC-7400 • حلقة تاكيمتر","Ref. CC-3000 • Helium Valve":"المرجع CC-3000 • صمام هيليوم","Ref. CC-880F • Meteorite Dial":"المرجع CC-880F • ميناء نيزكي","Ref. CC-110M • Micro-Rotor":"المرجع CC-110M • دوّار مصغّر","Ref. CC-9995 • Piece Unique":"المرجع CC-9995 • قطعة وحيدة",
+"42mm Titanium":"42 ملم تيتانيوم","Manual Wind":"تعبئة يدوية","44mm Forged Carbon":"44 ملم كربون مطروق","1/10th Sec":"1/10 ثانية","43mm Ceramic":"43 ملم سيراميك","300M Depth":"عمق 300 متر","40mm Platinum":"40 ملم بلاتين","122-Yr Moon":"قمر 122 سنة","39mm White Sand":"39 ملم رمل أبيض","5.4mm Thin":"سُمك 5.4 ملم","43mm Sapphire":"43 ملم ياقوت","3t Axial":"ثلاثي المحاور",
+"Flying one-minute tourbillon suspended between matte black PVD bridges with luminescent hands.":"توربيون طائر بدورة دقيقة معلّق بين جسور PVD سوداء مطفأة مع عقارب مضيئة.",
+"High-frequency column-wheel flyback chronograph inspired by endurance motorsport telemetry.":"كرونوغراف فلاي باك بعجلة عمودية عالي التردد مستوحى من قياسات سباقات التحمل.",
+"Unidirectional laser-engraved ceramic bezel with triple-gasket crowns built for saturation diving.":"حلقة سيراميك أحادية الاتجاه محفورة بالليزر وتاج بثلاث حشوات للغوص العميق.",
+"Astronomical perpetual calendar featuring a Gibeon meteorite moon disc over an obsidian dial.":"تقويم فلكي دائم بقرص قمر من نيزك جيبيون فوق ميناء من السبج.",
+"Pure architectural minimalism with a light-absorbing dial and solid platinum micro-rotor.":"بساطة معمارية خالصة مع ميناء ماص للضوء ودوّار مصغّر من البلاتين الصلب.",
+"360-degree visibility housed in a smoked black sapphire crystal case milled over 900 CNC hours.":"رؤية بزاوية 360 درجة داخل علبة ياقوت أسود مدخّن نُحتت على مدى 900 ساعة CNC.",
+"Bespoke Allocation":"تخصيص حصري","Atelier Series":"سلسلة الأتيليه","Deep-Sea Spec":"مواصفات الأعماق","Grand Complication":"التعقيد الأعظم","Sovereign Dress":"أناقة سيادية","Piece Unique":"قطعة وحيدة","Discover Craft":"اكتشف الحرفة",
+"Visual Exhibition":"معرض بصري","Macro Horology":"عالم الماكرو","Low-key studio photography capturing hand-polished chamfers and dark metallic reflections.":"تصوير استوديو داكن يلتقط الحواف المصقولة يدويًا والانعكاسات المعدنية الداكنة.",
+"Exhibition 01":"المعرض 01","Chiaroscuro Bezel Reflections":"انعكاسات الحلقة بين الضوء والظل","Hand-polished chamfers catching a single studio key light.":"حواف مصقولة يدويًا تلتقط ضوءًا رئيسيًا واحدًا.",
+"Macro Detail":"تفصيل ماكرو","Tactile Chronograph Pushers":"أزرار الكرونوغراف الملموسة","Knurled pushers machined to a tenth of a millimetre.":"أزرار محززة مشغّلة بدقة عُشر الملّيمتر.",
+"Exhibition 03":"المعرض 03","The Heartbeat Escapement":"ميزان النبض","Swiss lever escapement beating at 28,800 vph.":"ميزان رافعة سويسري ينبض بمعدل 28,800 اهتزازة في الساعة.",
+"Exhibition 04":"المعرض 04","Architectural Wrist Presence":"حضور معماري على المعصم","A stealth chronograph carried in the hand, lit from above.":"كرونوغراف داكن محمول في اليد، مضاء من الأعلى.",
+"Editorial & Insights":"مقالات ورؤى","The Horology":"مجلة","Journal":"الساعات",
+"Horological Engineering • 8 min read":"هندسة الساعات • قراءة 8 دقائق","Why the Bi-Axial Tourbillon Remains the Ultimate Complication":"لماذا يبقى التوربيون ثنائي المحور أرقى التعقيدات","How rotating the balance wheel cage across two planes conquers rate errors.":"كيف يتغلب تدوير قفص عجلة التوازن على مستويين على أخطاء المعدل.",
+"Material Science • 5 min read":"علم المواد • قراءة 5 دقائق","Forged Carbon vs. Grade 5 DLC Titanium in Stealth Watchmaking":"الكربون المطروق مقابل تيتانيوم الدرجة 5 بطلاء DLC في الساعات الداكنة","Comparing weight-to-strength ratios and light absorption in dark watch cases.":"مقارنة نسب الوزن إلى المتانة وامتصاص الضوء في علب الساعات الداكنة.",
+"Collector's Vault • 6 min read":"خزينة المقتنين • قراءة 6 دقائق","Curating a Sovereign Collection: Independent Ateliers to Watch":"بناء مجموعة سيادية: أتيليهات مستقلة تستحق المتابعة","Why low-production master watchmakers command unprecedented admiration.":"لماذا ينال صانعو الساعات المحدودة الإنتاج إعجابًا غير مسبوق.",
+"Read Monograph":"اقرأ المقال",
+"Private haute horlogerie salon dedicated to bespoke commissions, rare allocations, and museum-grade mechanical timepieces.":"صالون خاص للساعات الراقية مكرّس للطلبات المخصصة والإصدارات النادرة والساعات الميكانيكية بجودة المتاحف.",
+"Rue du Rhône 42, Geneva • Dubai DIFC • London Mayfair":"42 شارع الرون، جنيف • دبي DIFC • لندن مايفير",
+"Request a Private Salon Viewing":"اطلب زيارة خاصة للصالون","Schedule a confidential appointment with our master horologist.":"احجز موعدًا سريًا مع كبير صانعي الساعات لدينا.",
+"Select Timepiece":"اختر الساعة","Preferred Salon":"الصالون المفضل","Geneva":"جنيف","Dubai DIFC":"دبي DIFC","London Mayfair":"لندن مايفير",
+"Book Private Consultation":"احجز استشارة خاصة",
+"© 2026 CHRONOCRAZE Haute Horlogerie. All Rights Reserved.":"© 2026 CHRONOCRAZE للساعات الراقية. جميع الحقوق محفوظة.","Privacy Policy":"سياسة الخصوصية","Authenticity Guarantee":"ضمان الأصالة",
+"Full name":"الاسم الكامل","Email address":"البريد الإلكتروني",
+/* detail page */
+"Back to Collection":"العودة إلى المجموعة","Front":"أمامي","Angle":"زاوية","Macro":"ماكرو","Price":"السعر","On request":"عند الطلب","Specifications":"المواصفات","You May Also Admire":"قد يعجبك أيضًا","Previous":"السابق","Next":"التالي",
+"Case":"العلبة","Movement":"الحركة","Water Resistance":"مقاومة الماء","Crystal":"الزجاج","Strap":"السوار",
+"A flying one-minute tourbillon floats between matte black PVD bridges, hand-beveled and polished over 140 hours. Limited to 88 pieces, each allocated by private appointment.":"توربيون طائر بدورة دقيقة يطفو بين جسور PVD سوداء مطفأة، مشطوفة ومصقولة يدويًا على مدى 140 ساعة. إصدار محدود بـ 88 قطعة فقط، تُخصّص كل قطعة بموعد خاص.",
+"Flying tourbillon visible through the dial":"توربيون طائر ظاهر عبر الميناء","Hand-beveled titanium bridges":"جسور تيتانيوم مشطوفة يدويًا","Luminescent hands and indices":"عقارب ومؤشرات مضيئة",
+"42mm grade 5 titanium, matte PVD":"تيتانيوم درجة 5 بقطر 42 ملم، PVD مطفأ","Manual-wind flying tourbillon, Cal. CC-9017":"توربيون طائر بتعبئة يدوية، الحركة CC-9017","96 hours":"96 ساعة","50 m":"50 مترًا","Domed sapphire, anti-reflective":"ياقوت مقبّب مضاد للانعكاس","Titanium bracelet, folding clasp":"سوار تيتانيوم بإبزيم قابل للطي",
+"Built around a column-wheel flyback chronograph that resets and restarts in a single push. The forged carbon case weighs less than a third of steel and carries a tachymeter bezel for motorsport timing.":"مبنية حول كرونوغراف فلاي باك بعجلة عمودية يعيد الضبط ويبدأ من جديد بضغطة واحدة. علبة الكربون المطروق أخف من ثلث وزن الفولاذ وتحمل حلقة تاكيمتر لتوقيت السباقات.",
+"Column-wheel flyback chronograph":"كرونوغراف فلاي باك بعجلة عمودية","Forged carbon case, ceramic pushers":"علبة كربون مطروق وأزرار سيراميك","Tachymeter bezel reading to 1/10th second":"حلقة تاكيمتر تقرأ حتى 1/10 ثانية",
+"44mm forged carbon, ceramic pushers":"كربون مطروق بقطر 44 ملم، أزرار سيراميك","Automatic column-wheel flyback chronograph, Cal. CC-7400":"كرونوغراف فلاي باك أوتوماتيكي بعجلة عمودية، الحركة CC-7400","72 hours":"72 ساعة","100 m":"100 متر","Red leather strap, folding clasp":"سوار جلد أحمر بإبزيم قابل للطي",
+"A saturation-diving watch in black ceramic. The laser-engraved unidirectional bezel and triple-gasket crown keep it sealed to 300 metres, with a helium escape valve for decompression.":"ساعة غوص عميق من السيراميك الأسود. الحلقة أحادية الاتجاه المحفورة بالليزر والتاج بثلاث حشوات يحافظان على إحكامها حتى 300 متر، مع صمام هيليوم لتصريف الضغط.",
+"Laser-engraved ceramic bezel":"حلقة سيراميك محفورة بالليزر","Helium escape valve":"صمام تصريف الهيليوم","Triple-gasket screw-down crown":"تاج لولبي بثلاث حشوات",
+"43mm ceramic, helium escape valve":"سيراميك بقطر 43 ملم، صمام هيليوم","Automatic diver movement, Cal. CC-3000":"حركة غوص أوتوماتيكية، الحركة CC-3000","80 hours":"80 ساعة","300 m":"300 متر","Flat sapphire, anti-reflective":"ياقوت مسطح مضاد للانعكاس","Ceramic-coated bracelet, diver extension":"سوار بطلاء سيراميك مع وصلة غوص",
+"A perpetual calendar that needs no correction until the year 2100. A Gibeon meteorite moon disc rotates over an obsidian dial and keeps the lunar phase accurate to one day in 122 years.":"تقويم دائم لا يحتاج إلى تصحيح حتى عام 2100. قرص قمر من نيزك جيبيون يدور فوق ميناء من السبج ويحافظ على دقة طور القمر بخطأ يوم واحد كل 122 سنة.",
+"Perpetual calendar through 2100":"تقويم دائم حتى عام 2100","Gibeon meteorite moon disc":"قرص قمر من نيزك جيبيون","Platinum case, hand-finished":"علبة بلاتين بتشطيب يدوي",
+"40mm platinum, meteorite moon disc":"بلاتين بقطر 40 ملم، قرص قمر نيزكي","Automatic perpetual calendar, Cal. CC-880F":"تقويم دائم أوتوماتيكي، الحركة CC-880F","30 m":"30 مترًا","Night-blue rubber strap, folding clasp":"سوار مطاطي أزرق ليلي بإبزيم قابل للطي",
+"At 5.4mm thick, the Monolith is a study in restraint. A solid platinum micro-rotor sits flush inside the movement, and the light-absorbing dial removes everything that is not time.":"بسُمك 5.4 ملم، مونوليث درس في ضبط النفس. دوّار مصغّر من البلاتين الصلب يستقر داخل الحركة، والميناء الماص للضوء يزيل كل ما ليس وقتًا.",
+"5.4mm total case height":"ارتفاع العلبة الكلي 5.4 ملم","Solid platinum micro-rotor":"دوّار مصغّر من البلاتين الصلب","Light-absorbing matte dial":"ميناء مطفأ ماص للضوء",
+"39mm white-sand ceramic, 5.4mm thick":"سيراميك رملي أبيض بقطر 39 ملم وسُمك 5.4 ملم","Micro-rotor automatic, Cal. CC-110M":"أوتوماتيكية بدوّار مصغّر، الحركة CC-110M","60 hours":"60 ساعة","White rubber strap, pin buckle":"سوار مطاطي أبيض بإبزيم دبوس",
+"The entire case is milled from one block of smoked sapphire over 900 CNC hours, so the tri-axial tourbillon is visible from every angle. Only one piece will ever be made.":"العلبة بأكملها منحوتة من كتلة واحدة من الياقوت المدخّن على مدى 900 ساعة CNC، لذا يظهر التوربيون ثلاثي المحاور من كل زاوية. لن تُصنع سوى قطعة واحدة.",
+"Smoked sapphire monobloc case":"علبة مونوبلوك من الياقوت المدخّن","Tri-axial tourbillon":"توربيون ثلاثي المحاور","Piece unique, numbered and signed":"قطعة وحيدة، مرقّمة وموقّعة",
+"43mm smoked sapphire monobloc":"مونوبلوك ياقوت مدخّن بقطر 43 ملم","Manual-wind tri-axial tourbillon, Cal. CC-9995":"توربيون ثلاثي المحاور بتعبئة يدوية، الحركة CC-9995","120 hours":"120 ساعة"
+};
+const orig=new WeakMap(),trd=new WeakMap();
+function applyLang(root){
+  const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>{const el=n.parentElement;
+    return (!el||/^(SCRIPT|STYLE)$/.test(el.nodeName)||el.closest('[data-n]'))?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT}});
+  const nodes=[];while(w.nextNode())nodes.push(w.currentNode);
+  nodes.forEach(n=>{
+    if(!orig.has(n)){if(!n.nodeValue.trim())return;orig.set(n,n.nodeValue)}
+    const o=orig.get(n);
+    if(LANG==='ar'){const k=o.trim(),t=T[k];
+      if(t){n.nodeValue=o.slice(0,o.indexOf(k))+t+o.slice(o.indexOf(k)+k.length);trd.set(n,1)}}
+    else if(trd.get(n)){n.nodeValue=o;trd.delete(n)}
+  });
+  root.querySelectorAll('[placeholder]').forEach(el=>{if(!el.dataset.ph)el.dataset.ph=el.getAttribute('placeholder');
+    const t=T[el.dataset.ph];el.placeholder=(LANG==='ar'&&t)?t:el.dataset.ph});
+}
+const langBtn=document.getElementById('lang');
+function setLang(l,save){
+  LANG=l;const h=document.documentElement;h.lang=l;h.dir=l==='ar'?'rtl':'ltr';
+  langBtn.textContent=l==='ar'?'EN':'عربي';
+  applyLang(document.body);
+  if(save){try{localStorage.setItem('cc-lang',l)}catch(e){}}
+}
+langBtn.addEventListener('click',()=>setLang(LANG==='ar'?'en':'ar',true));
+let saved='en';try{saved=localStorage.getItem('cc-lang')||'en'}catch(e){}
+if(saved==='ar')setLang('ar');
+route();
+</script>
+
+</body>
+</html>
