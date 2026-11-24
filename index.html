@@ -3,6 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Chronocraze: luxury timepieces by private appointment. Skeleton tourbillons, chronographs, deep-sea divers and dress watches.">
+<meta name="theme-color" content="#030303">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Chronocraze">
+<meta property="og:description" content="Luxury timepieces by private appointment.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23050505'/%3E%3Ccircle cx='32' cy='32' r='19' fill='none' stroke='%23fff' stroke-width='3'/%3E%3Cpath d='M32 20v13l8 5' stroke='%23fff' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Store", "name": "Chronocraze", "description": "Luxury timepieces by private appointment.", "telephone": "+201064872534"}</script>
 <title>Chronocraze</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -182,6 +189,10 @@ footer{border-top:1px solid var(--line);margin:0 calc(-1 * max(16px,env(safe-are
 .fgrid .logo{display:block;margin-bottom:16px}
 .fgrid p{font-size:11px;color:#77777d;max-width:290px;margin:0 0 14px}
 .ci{font-size:9.5px;color:#66666b;display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.ci a{color:#d0d0d4;border-bottom:1px solid var(--line2);transition:color .25s,border-color .25s}.ci a:hover{color:#fff;border-color:#fff}
+.ok a{color:#fff;text-decoration:underline}
+.wa{position:fixed;z-index:55;inset-inline-end:max(18px,env(safe-area-inset-right,0px));bottom:calc(18px + env(safe-area-inset-bottom,0px));width:52px;height:52px;border-radius:50%;background:#25d366;display:grid;place-items:center;box-shadow:0 10px 30px rgba(0,0,0,.5);transition:transform .3s}
+.wa:hover{transform:translateY(-3px) scale(1.06)}
 .fgrid h4{margin:0 0 4px;font-size:13px}
 .fgrid .sub{font-size:9.5px;color:#4d4d52;margin:0 0 18px}
 form{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -372,17 +383,18 @@ html[dir=rtl] .stats div{unicode-bidi:plaintext}
       <div class="rv">
         <span class="logo">CHRONOCRAZE</span>
         <p>Private haute horlogerie salon dedicated to bespoke commissions, rare allocations, and museum-grade mechanical timepieces.</p>
-        <div class="ci"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2"><path d="M12 22s7-7 7-13a7 7 0 1 0-14 0c0 6 7 13 7 13z"/><circle cx="12" cy="9" r="2.5"/></svg>Rue du Rhône 42, Geneva • Dubai DIFC • London Mayfair</div>
-        <div class="ci"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>concierge@chronocraze.luxury</div>
+        <div class="ci"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2"><path d="M12 22s7-7 7-13a7 7 0 1 0-14 0c0 6 7 13 7 13z"/><circle cx="12" cy="9" r="2.5"/></svg>Viewings by private appointment</div>
+        <div class="ci"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg><a href="tel:+201064872534" dir="ltr">+20 106 487 2534</a></div>
+        <div class="ci"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2"><path d="M21 12a9 9 0 0 1-13.4 7.8L3 21l1.3-4.4A9 9 0 1 1 21 12z"/></svg><a href="https://wa.me/201064872534" target="_blank" rel="noopener">WhatsApp</a></div>
       </div>
       <div class="rv" style="--d:.12s">
         <h4>Request a Private Salon Viewing</h4>
         <p class="sub">Schedule a confidential appointment with our master horologist.</p>
         <form id="form" autocomplete="off">
           <input id="fn" placeholder="Full name" aria-label="Full name" required>
-          <input id="fe" type="email" placeholder="Email address" aria-label="Email address" required>
+          <input id="fe" type="tel" inputmode="tel" dir="ltr" placeholder="Your phone number" aria-label="Your phone number" required>
           <select id="ft" aria-label="Select timepiece"><option>Select Timepiece</option><option>Apex Eclipse Tourbillon</option><option>Vortex Carbon Chrono</option><option>Abyssal Stealth 300M</option><option>Celestia Perpetual</option><option>Monolith Ultra-Thin</option><option>Phantom Sapphire X</option></select>
-          <select id="fs" aria-label="Preferred salon"><option>Preferred Salon</option><option>Geneva</option><option>Dubai DIFC</option><option>London Mayfair</option></select>
+          <select id="fs" aria-label="Preferred time"><option>Preferred Time</option><option>Morning</option><option>Afternoon</option><option>Evening</option></select>
           <button class="sbtn" type="submit">Book Private Consultation</button>
           <p class="ok" id="ok" role="status"></p>
         </form>
@@ -392,6 +404,7 @@ html[dir=rtl] .stats div{unicode-bidi:plaintext}
   </div>
 </footer>
 
+<a class="wa" href="https://wa.me/201064872534" target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 1-13.4 7.8L3 21l1.3-4.4A9 9 0 1 1 21 12z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-.8.8a3.6 3.6 0 0 1-1.5-1.5l.8-.8-1-2z" fill="#fff" stroke="none"/></svg></a>
 <script>
 document.documentElement.classList.add('js');
 let uid=0;
@@ -527,7 +540,7 @@ document.getElementById('jgrid').innerHTML=posts.map((p,i)=>`<article class="car
 
 /* form */
 document.getElementById('form').addEventListener('submit',e=>{e.preventDefault();
-  const n=document.getElementById('fn').value.trim().split(' ')[0];
+  const n=document.getElementById('fn').value.trim().split(' ')[0];if(window.sendWA&&window.sendWA(e.target))return;
   document.getElementById('ok').textContent=(window.LANG==='ar'?`شكرًا${n?' '+n:''}. تم تسجيل طلبك، وسيتواصل معك أحد مساعدينا لتأكيد موعد الزيارة.`:`Thank you${n?', '+n:''}. Your request is noted. A concierge will confirm your viewing.`);e.target.reset()});
 
 /* cursor glow on cards */
@@ -683,7 +696,8 @@ const T={
 "39mm white-sand ceramic, 5.4mm thick":"سيراميك رملي أبيض بقطر 39 ملم وسُمك 5.4 ملم","Micro-rotor automatic, Cal. CC-110M":"أوتوماتيكية بدوّار مصغّر، الحركة CC-110M","60 hours":"60 ساعة","White rubber strap, pin buckle":"سوار مطاطي أبيض بإبزيم دبوس",
 "The entire case is milled from one block of smoked sapphire over 900 CNC hours, so the tri-axial tourbillon is visible from every angle. Only one piece will ever be made.":"العلبة بأكملها منحوتة من كتلة واحدة من الياقوت المدخّن على مدى 900 ساعة CNC، لذا يظهر التوربيون ثلاثي المحاور من كل زاوية. لن تُصنع سوى قطعة واحدة.",
 "Smoked sapphire monobloc case":"علبة مونوبلوك من الياقوت المدخّن","Tri-axial tourbillon":"توربيون ثلاثي المحاور","Piece unique, numbered and signed":"قطعة وحيدة، مرقّمة وموقّعة",
-"43mm smoked sapphire monobloc":"مونوبلوك ياقوت مدخّن بقطر 43 ملم","Manual-wind tri-axial tourbillon, Cal. CC-9995":"توربيون ثلاثي المحاور بتعبئة يدوية، الحركة CC-9995","120 hours":"120 ساعة"
+"43mm smoked sapphire monobloc":"مونوبلوك ياقوت مدخّن بقطر 43 ملم","Manual-wind tri-axial tourbillon, Cal. CC-9995":"توربيون ثلاثي المحاور بتعبئة يدوية، الحركة CC-9995","120 hours":"120 ساعة",
+"Viewings by private appointment":"المعاينة بموعد خاص فقط","Your phone number":"رقم تليفونك","Preferred Time":"الوقت المفضل","Morning":"صباحًا","Afternoon":"ظهرًا","Evening":"مساءً"
 };
 const orig=new WeakMap(),trd=new WeakMap();
 function applyLang(root){
@@ -709,6 +723,26 @@ function setLang(l,save){
 }
 langBtn.addEventListener('click',()=>setLang(LANG==='ar'?'en':'ar',true));
 let saved='en';try{saved=localStorage.getItem('cc-lang')||'en'}catch(e){}
+/* Booking form: opens WhatsApp with a ready message */
+const WA='201064872534';
+window.sendWA=function(f){
+  const v=id=>document.getElementById(id);
+  const name=v('fn').value.trim(),phone=v('fe').value.trim();
+  const ti=v('ft').selectedIndex,tp=v('fs').selectedIndex,ar=LANG==='ar';
+  const watchEN=ti>0?prods[ti-1].n:'';
+  const tEN=['','Morning','Afternoon','Evening'],tAR=['','صباحًا','ظهرًا','مساءً'];
+  const lines=ar
+    ?['مرحبًا، أود حجز استشارة خاصة.','الاسم: '+name,'رقم التليفون: '+phone,watchEN?'الساعة: '+(T[watchEN]||watchEN):'',tp>0?'الوقت المفضل: '+tAR[tp]:'']
+    :['Hello, I would like to book a private consultation.','Name: '+name,'Phone: '+phone,watchEN?'Timepiece: '+watchEN:'',tp>0?'Preferred time: '+tEN[tp]:''];
+  const url='https://wa.me/'+WA+'?text='+encodeURIComponent(lines.filter(Boolean).join('\n'));
+  window.open(url,'_blank','noopener');
+  const ok=v('ok');ok.textContent='';
+  const s=document.createElement('span');
+  s.textContent=ar?'جارٍ فتح واتساب برسالة جاهزة. إن لم يُفتح، اضغط هنا: ':'Opening WhatsApp with your request. If it did not open, tap here: ';
+  const a=document.createElement('a');a.href=url;a.target='_blank';a.rel='noopener';a.textContent=ar?'افتح واتساب':'Open WhatsApp';
+  ok.append(s,a);
+  return true;
+};
 if(saved==='ar')setLang('ar');
 route();
 </script>
